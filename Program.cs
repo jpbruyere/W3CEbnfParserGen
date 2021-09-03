@@ -35,7 +35,7 @@ namespace W3CEbnfParserGen
 				case Type.CharRange:
 					return $"[{Matche}]{CardinalityString}";
 				case Type.CodePoint:
-					return $"#x{Matche}{CardinalityString}";
+					return $"{Matche}{CardinalityString}";
 				default:
 					return $"'{Matche}'{CardinalityString}";
 			}
@@ -103,7 +103,7 @@ namespace W3CEbnfParserGen
 		static void printHelp () {
 			Console.WriteLine (@"
 W3C EBNF csharp parser generator.
-W3CEbnfParserGen [options] input-file
+W3CEbnfParserGen [options] input-files
 
 	-o path		output file path.
 	-h		this help message.
@@ -112,20 +112,21 @@ W3CEbnfParserGen [options] input-file
         static void Main(string[] args)
         {
             int i = 0;
-			string inputFile = null, outputFile = null;
+			List<string> inputFiles = new List<string> ();
+			string outputFile = null;
 			try
 			{
-				
 				while (i < args.Length) {
-					switch (args[i++]) {
+					switch (args[i]) {
 						case "-h":
 							printHelp ();
 							return;
 						case "-o":
+							i++;
 							outputFile = args[i++];
 							break;
 						default:
-							inputFile = args[i-1];
+							inputFiles.Add (args[i++]);
 							break;
 					}
 				}
@@ -134,28 +135,42 @@ W3CEbnfParserGen [options] input-file
 				printHelp ();
 				return;
 			}
-			if (string.IsNullOrEmpty (inputFile)) {
+			if (inputFiles.Count == 0) {
 				Console.WriteLine ($"No ebnf input file specified.");
 				printHelp ();
 				return;
 			}
 
-			new Program (inputFile, outputFile).Generate ();
+			new Program (outputFile, inputFiles.ToArray()).Generate ();
         }
 
-		string inputPath, outputPath;
+		string[] inputFiles;
+		string outputPath;
+
 		
-		public Program (string input, string output) {
-			inputPath = input;
-			if (string.IsNullOrEmpty (output))
-				outputPath = $"{inputPath}.cs";
-			else
+		public Program (string output, params string[] inputs) {
+			inputFiles = inputs;
+			if (string.IsNullOrEmpty (output)) {
+				if (inputs.Length == 1)
+					outputPath = $"{inputFiles[0]}_generated.cs";
+				else
+					outputPath = $"w3cEbnfParser_generated.cs";
+
+			} else
 				outputPath = output;
 		}
 
 		public void Generate () {
-			string ebnfSource = null;
+			List<SymbolDecl> symbols = new List<SymbolDecl> (100);
+			foreach	(string inputFile in inputFiles)
+				symbols.AddRange (parseEbnf (inputFile));
 			
+			
+			foreach (SymbolDecl sd in symbols) 
+				Console.WriteLine ($"{sd}");
+		}
+		SymbolDecl[] parseEbnf (string inputPath) {
+			string ebnfSource = null;
 			using (Stream s = new FileStream (inputPath, FileMode.Open)) {						
 				using (StreamReader sr = new StreamReader (s)) 
 					ebnfSource = sr.ReadToEnd ();
@@ -168,12 +183,24 @@ W3CEbnfParserGen [options] input-file
 			}
 
 			EbnfSyntaxAnalyser ebnfSyntAnalyser = new EbnfSyntaxAnalyser (ebnfSource,
-				ebnfToks.Where (tok => !tok.Type.HasFlag (TokenType.Trivia)).ToArray ());
-			SymbolDecl[] symbols = ebnfSyntAnalyser.GetSymbols ();
+				removeSpuriousQuestionMarks (
+				ebnfToks.Where (tok => !tok.Type.HasFlag (TokenType.Trivia)).ToArray ()));
+			return ebnfSyntAnalyser.GetSymbols ();
+		}
 
-			foreach (SymbolDecl sd in symbols) 
-				Console.WriteLine ($"{sd}");
-
+		Token[] removeSpuriousQuestionMarks (Token[] tokens) {
+			if (tokens.Length == 0)
+				return tokens;
+			int i = 0;
+			List<Token> toks = new List<Token> (tokens.Length);
+			Token lastTok = tokens[i++];
+			while (i < tokens.Length) {
+				if (!(tokens[i].Type == TokenType.SymbolAffectation && lastTok.Type == TokenType.CardinalityOp))
+					toks.Add (lastTok);
+				lastTok = tokens[i++];
+			}
+			toks.Add (lastTok);
+			return toks.ToArray ();
 		}
 
     }

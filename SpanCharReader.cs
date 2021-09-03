@@ -43,7 +43,7 @@ namespace W3CEbnfParserGen
 		
 		public bool TryReadUntil (ReadOnlySpan<char> str, StringComparison comparison = StringComparison.Ordinal) {
 			int startPos = curPos;
-			while (curPos < buffer.Length - str.Length) {
+			while (curPos <= buffer.Length - str.Length) {
 				if (buffer[curPos] == str[0] && buffer.Slice(curPos + 1, str.Length - 1).Equals(str.Slice (1), comparison))
 					return true;
 				curPos++;			

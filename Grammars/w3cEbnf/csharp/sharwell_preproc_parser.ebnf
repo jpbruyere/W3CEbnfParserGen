@@ -1,0 +1,33 @@
+/* converted on Fri Sep 3, 2021, 14:16 (UTC) by antlr_4-to-w3c v0.53 which is Copyright (c) 2011-2021 by Gunther Rademacher <grd@gmx.net> */
+
+preprocessor_directive
+         ::= DEFINE CONDITIONAL_SYMBOL directive_new_line_or_sharp
+           | UNDEF CONDITIONAL_SYMBOL directive_new_line_or_sharp
+           | IF preprocessor_expression directive_new_line_or_sharp
+           | ELIF preprocessor_expression directive_new_line_or_sharp
+           | ELSE directive_new_line_or_sharp
+           | ENDIF directive_new_line_or_sharp
+           | LINE ( DIGITS STRING? | DEFAULT | DIRECTIVE_HIDDEN ) directive_new_line_or_sharp
+           | ERROR TEXT directive_new_line_or_sharp
+           | WARNING TEXT directive_new_line_or_sharp
+           | REGION TEXT? directive_new_line_or_sharp
+           | ENDREGION TEXT? directive_new_line_or_sharp
+           | PRAGMA TEXT directive_new_line_or_sharp
+           | NULLABLE TEXT directive_new_line_or_sharp
+directive_new_line_or_sharp
+         ::= DIRECTIVE_NEW_LINE
+           | EOF
+preprocessor_expression
+         ::= TRUE
+           | FALSE
+           | CONDITIONAL_SYMBOL
+           | OPEN_PARENS preprocessor_expression CLOSE_PARENS
+           | BANG preprocessor_expression
+           | preprocessor_expression OP_EQ preprocessor_expression
+           | preprocessor_expression OP_NE preprocessor_expression
+           | preprocessor_expression OP_AND preprocessor_expression
+           | preprocessor_expression OP_OR preprocessor_expression
+
+<?TOKENS?>
+
+EOF      ::= $

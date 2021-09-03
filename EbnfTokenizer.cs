@@ -164,6 +164,14 @@ namespace W3CEbnfParserGen
 						}
 					}
 					throw new EbnfParserException ("malform ucs character codepoint, expecting '#xN'.");
+				case '$':
+					reader.Advance ();
+					addTok (ref reader, TokenType.EndOfFile);
+					break;
+				case '.':
+					reader.Advance ();
+					addTok (ref reader, TokenType.CodePointMatch); // '.' is any char
+					break;
 				default:
 					if (readName(ref reader))
 						addTok (ref reader, TokenType.SymbolName);

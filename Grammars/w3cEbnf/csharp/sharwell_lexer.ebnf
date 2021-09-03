@@ -1,0 +1,1046 @@
+/* converted on Fri Sep 3, 2021, 14:14 (UTC) by antlr_4-to-w3c v0.53 which is Copyright (c) 2011-2021 by Gunther Rademacher <grd@gmx.net> */
+
+_        ::= WHITESPACES
+           | OPEN_BRACE_INSIDE
+           | CLOSE_BRACE_INSIDE
+           | DIRECTIVE_WHITESPACES
+          /* ws: definition */
+
+<?TOKENS?>
+
+BYTE_ORDER_MARK
+         ::= #xEF #xBB #xBF
+SINGLE_LINE_DOC_COMMENT
+         ::= '///' InputCharacter*
+DELIMITED_DOC_COMMENT?
+         ::= '/**' .* '*/'
+SINGLE_LINE_COMMENT
+         ::= '//' InputCharacter*
+DELIMITED_COMMENT?
+         ::= '/*' .* '*/'
+WHITESPACES
+         ::= ( Whitespace | NewLine )+
+SHARP    ::= '#'
+ABSTRACT ::= 'abstract'
+ADD      ::= 'add'
+ALIAS    ::= 'alias'
+ARGLIST  ::= '__arglist'
+AS       ::= 'as'
+ASCENDING
+         ::= 'ascending'
+ASYNC    ::= 'async'
+AWAIT    ::= 'await'
+BASE     ::= 'base'
+BOOL     ::= 'bool'
+BREAK    ::= 'break'
+BY       ::= 'by'
+BYTE     ::= 'byte'
+CASE     ::= 'case'
+CATCH    ::= 'catch'
+CHAR     ::= 'char'
+CHECKED  ::= 'checked'
+CLASS    ::= 'class'
+CONST    ::= 'const'
+CONTINUE ::= 'continue'
+DECIMAL  ::= 'decimal'
+DEFAULT  ::= 'default'
+DELEGATE ::= 'delegate'
+DESCENDING
+         ::= 'descending'
+DO       ::= 'do'
+DOUBLE   ::= 'double'
+DYNAMIC  ::= 'dynamic'
+ELSE     ::= 'else'
+ENUM     ::= 'enum'
+EQUALS   ::= 'equals'
+EVENT    ::= 'event'
+EXPLICIT ::= 'explicit'
+EXTERN   ::= 'extern'
+FALSE    ::= 'false'
+FINALLY  ::= 'finally'
+FIXED    ::= 'fixed'
+FLOAT    ::= 'float'
+FOR      ::= 'for'
+FOREACH  ::= 'foreach'
+FROM     ::= 'from'
+GET      ::= 'get'
+GOTO     ::= 'goto'
+GROUP    ::= 'group'
+IF       ::= 'if'
+IMPLICIT ::= 'implicit'
+IN       ::= 'in'
+INT      ::= 'int'
+INTERFACE
+         ::= 'interface'
+INTERNAL ::= 'internal'
+INTO     ::= 'into'
+IS       ::= 'is'
+JOIN     ::= 'join'
+LET      ::= 'let'
+LOCK     ::= 'lock'
+LONG     ::= 'long'
+NAMEOF   ::= 'nameof'
+NAMESPACE
+         ::= 'namespace'
+NEW      ::= 'new'
+NULL_    ::= 'null'
+OBJECT   ::= 'object'
+ON       ::= 'on'
+OPERATOR ::= 'operator'
+ORDERBY  ::= 'orderby'
+OUT      ::= 'out'
+OVERRIDE ::= 'override'
+PARAMS   ::= 'params'
+PARTIAL  ::= 'partial'
+PRIVATE  ::= 'private'
+PROTECTED
+         ::= 'protected'
+PUBLIC   ::= 'public'
+READONLY ::= 'readonly'
+REF      ::= 'ref'
+REMOVE   ::= 'remove'
+RETURN   ::= 'return'
+SBYTE    ::= 'sbyte'
+SEALED   ::= 'sealed'
+SELECT   ::= 'select'
+SET      ::= 'set'
+SHORT    ::= 'short'
+SIZEOF   ::= 'sizeof'
+STACKALLOC
+         ::= 'stackalloc'
+STATIC   ::= 'static'
+STRING   ::= 'string'
+STRUCT   ::= 'struct'
+SWITCH   ::= 'switch'
+THIS     ::= 'this'
+THROW    ::= 'throw'
+TRUE     ::= 'true'
+TRY      ::= 'try'
+TYPEOF   ::= 'typeof'
+UINT     ::= 'uint'
+ULONG    ::= 'ulong'
+UNCHECKED
+         ::= 'unchecked'
+UNMANAGED
+         ::= 'unmanaged'
+UNSAFE   ::= 'unsafe'
+USHORT   ::= 'ushort'
+USING    ::= 'using'
+VAR      ::= 'var'
+VIRTUAL  ::= 'virtual'
+VOID     ::= 'void'
+VOLATILE ::= 'volatile'
+WHEN     ::= 'when'
+WHERE    ::= 'where'
+WHILE    ::= 'while'
+YIELD    ::= 'yield'
+IDENTIFIER
+         ::= '@'? IdentifierOrKeyword
+LITERAL_ACCESS
+         ::= [0-9] ( '_'* [0-9] )* IntegerTypeSuffix? '.' '@'? IdentifierOrKeyword
+INTEGER_LITERAL
+         ::= [0-9] ( '_'* [0-9] )* IntegerTypeSuffix?
+HEX_INTEGER_LITERAL
+         ::= '0' [xX] ( '_'* HexDigit )+ IntegerTypeSuffix?
+BIN_INTEGER_LITERAL
+         ::= '0' [bB] ( '_'* [0-1] )+ IntegerTypeSuffix?
+REAL_LITERAL
+         ::= ( [0-9] ( '_'* [0-9] )* )? '.' [0-9] ( '_'* [0-9] )* ExponentPart? [FfDdMm]?
+           | [0-9] ( '_'* [0-9] )* ( [FfDdMm] | ExponentPart [FfDdMm]? )
+CHARACTER_LITERAL
+         ::= "'" ( [^'\#xd#xa#x0085#x2028#x2029] | CommonCharacter ) "'"
+REGULAR_STRING
+         ::= '"' ( [^"\#xd#xa#x0085#x2028#x2029] | CommonCharacter )* '"'
+VERBATIUM_STRING
+         ::= '@"' ( [^"] | '""' )* '"'
+INTERPOLATED_REGULAR_STRING_START
+         ::= '$"'
+INTERPOLATED_VERBATIUM_STRING_START
+         ::= '$@"'
+OPEN_BRACE
+         ::= '{'
+CLOSE_BRACE
+         ::= '}'
+OPEN_BRACKET
+         ::= '['
+CLOSE_BRACKET
+         ::= ']'
+OPEN_PARENS
+         ::= '('
+CLOSE_PARENS
+         ::= ')'
+DOT      ::= '.'
+COMMA    ::= ','
+COLON    ::= ':'
+SEMICOLON
+         ::= ';'
+PLUS     ::= '+'
+MINUS    ::= '-'
+STAR     ::= '*'
+DIV      ::= '/'
+PERCENT  ::= '%'
+AMP      ::= '&'
+BITWISE_OR
+         ::= '|'
+CARET    ::= '^'
+BANG     ::= '!'
+TILDE    ::= '~'
+ASSIGNMENT
+         ::= '='
+LT       ::= '<'
+GT       ::= '>'
+INTERR   ::= '?'
+DOUBLE_COLON
+         ::= '::'
+OP_COALESCING
+         ::= '??'
+OP_INC   ::= '++'
+OP_DEC   ::= '--'
+OP_AND   ::= '&&'
+OP_OR    ::= '||'
+OP_PTR   ::= '->'
+OP_EQ    ::= '=='
+OP_NE    ::= '!='
+OP_LE    ::= '<='
+OP_GE    ::= '>='
+OP_ADD_ASSIGNMENT
+         ::= '+='
+OP_SUB_ASSIGNMENT
+         ::= '-='
+OP_MULT_ASSIGNMENT
+         ::= '*='
+OP_DIV_ASSIGNMENT
+         ::= '/='
+OP_MOD_ASSIGNMENT
+         ::= '%='
+OP_AND_ASSIGNMENT
+         ::= '&='
+OP_OR_ASSIGNMENT
+         ::= '|='
+OP_XOR_ASSIGNMENT
+         ::= '^='
+OP_LEFT_SHIFT
+         ::= '<<'
+OP_LEFT_SHIFT_ASSIGNMENT
+         ::= '<<='
+OP_COALESCING_ASSIGNMENT
+         ::= '??='
+OP_RANGE ::= '..'
+DOUBLE_CURLY_INSIDE
+         ::= '{{'
+OPEN_BRACE_INSIDE
+         ::= '{'
+REGULAR_CHAR_INSIDE
+         ::= SimpleEscapeSequence
+VERBATIUM_DOUBLE_QUOTE_INSIDE
+         ::= '""'
+DOUBLE_QUOTE_INSIDE
+         ::= '"'
+REGULAR_STRING_INSIDE
+         ::= [^{"]+
+VERBATIUM_INSIDE_STRING
+         ::= [^{"]+
+DOUBLE_CURLY_CLOSE_INSIDE
+         ::= '}}'
+CLOSE_BRACE_INSIDE
+         ::= '}'
+FORMAT_STRING
+         ::= [^}]+
+DIRECTIVE_WHITESPACES
+         ::= Whitespace+
+DIGITS   ::= [0-9]+
+DIRECTIVE_TRUE
+         ::= 'true'
+DIRECTIVE_FALSE
+         ::= 'false'
+DEFINE   ::= 'define'
+UNDEF    ::= 'undef'
+DIRECTIVE_IF
+         ::= 'if'
+ELIF     ::= 'elif'
+DIRECTIVE_ELSE
+         ::= 'else'
+ENDIF    ::= 'endif'
+LINE     ::= 'line'
+ERROR    ::= 'error' Whitespace+
+WARNING  ::= 'warning' Whitespace+
+REGION   ::= 'region' Whitespace*
+ENDREGION
+         ::= 'endregion' Whitespace*
+PRAGMA   ::= 'pragma' Whitespace+
+NULLABLE ::= 'nullable' Whitespace+
+DIRECTIVE_DEFAULT
+         ::= 'default'
+DIRECTIVE_HIDDEN
+         ::= 'hidden'
+DIRECTIVE_OPEN_PARENS
+         ::= '('
+DIRECTIVE_CLOSE_PARENS
+         ::= ')'
+DIRECTIVE_BANG
+         ::= '!'
+DIRECTIVE_OP_EQ
+         ::= '=='
+DIRECTIVE_OP_NE
+         ::= '!='
+DIRECTIVE_OP_AND
+         ::= '&&'
+DIRECTIVE_OP_OR
+         ::= '||'
+DIRECTIVE_STRING
+         ::= '"' [^"#xd#xa#x0085#x2028#x2029]* '"'
+CONDITIONAL_SYMBOL
+         ::= IdentifierOrKeyword
+DIRECTIVE_SINGLE_LINE_COMMENT
+         ::= '//' [^#xd#xa#x0085#x2028#x2029]*
+DIRECTIVE_NEW_LINE
+         ::= NewLine
+TEXT     ::= [^#xd#xa#x0085#x2028#x2029]+
+TEXT_NEW_LINE
+         ::= NewLine
+InputCharacter
+         ::= [^#xd#xa#x0085#x2028#x2029]
+NewLineCharacter
+         ::= #xD
+           | #xA
+           | #x85
+           | #x2028
+           | #x2029
+IntegerTypeSuffix
+         ::= [lL]? [uU]
+           | [uU]? [lL]
+ExponentPart
+         ::= [eE] ( '+' | '-' )? [0-9] ( '_'* [0-9] )*
+CommonCharacter
+         ::= SimpleEscapeSequence
+           | HexEscapeSequence
+           | UnicodeEscapeSequence
+SimpleEscapeSequence
+         ::= "\'"
+           | '\"'
+           | '\\'
+           | '\0'
+           | '\a'
+           | '\b'
+           | '\f'
+           | '\n'
+           | '\r'
+           | '\t'
+           | '\v'
+HexEscapeSequence
+         ::= '\x' HexDigit
+           | '\x' HexDigit HexDigit
+           | '\x' HexDigit HexDigit HexDigit
+           | '\x' HexDigit HexDigit HexDigit HexDigit
+NewLine  ::= #xD #xA
+           | #xD
+           | #xA
+           | #x85
+           | #x2028
+           | #x2029
+Whitespace
+         ::= UnicodeClassZS
+           | #x9
+           | #xB
+           | #xC
+UnicodeClassZS
+         ::= ' '
+           | #xA0
+           | #x1680
+           | #x180E
+           | #x2000
+           | #x2001
+           | #x2002
+           | #x2003
+           | #x2004
+           | #x2005
+           | #x2006
+           | #x2008
+           | #x2009
+           | #x200A
+           | #x202F
+           | #x3000
+           | #x205F
+IdentifierOrKeyword
+         ::= IdentifierStartCharacter IdentifierPartCharacter*
+IdentifierStartCharacter
+         ::= LetterCharacter
+           | '_'
+IdentifierPartCharacter
+         ::= LetterCharacter
+           | DecimalDigitCharacter
+           | ConnectingCharacter
+           | CombiningCharacter
+           | FormattingCharacter
+LetterCharacter
+         ::= UnicodeClassLU
+           | UnicodeClassLL
+           | UnicodeClassLT
+           | UnicodeClassLM
+           | UnicodeClassLO
+           | UnicodeClassNL
+           | UnicodeEscapeSequence
+DecimalDigitCharacter
+         ::= UnicodeClassND
+           | UnicodeEscapeSequence
+ConnectingCharacter
+         ::= UnicodeClassPC
+           | UnicodeEscapeSequence
+CombiningCharacter
+         ::= UnicodeClassMN
+           | UnicodeClassMC
+           | UnicodeEscapeSequence
+FormattingCharacter
+         ::= UnicodeClassCF
+           | UnicodeEscapeSequence
+UnicodeEscapeSequence
+         ::= '\u' HexDigit HexDigit HexDigit HexDigit
+           | '\U' HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit HexDigit
+HexDigit ::= [0-9]
+           | [A-F]
+           | [a-f]
+UnicodeClassLU
+         ::= [A-Z]
+           | [#xC0-#xD6]
+           | [#xD8-#xDE]
+           | [#x100-#x136]
+           | [#x139-#x147]
+           | [#x14A-#x178]
+           | [#x179-#x17D]
+           | [#x181-#x182]
+           | [#x184-#x186]
+           | [#x187-#x189]
+           | [#x18A-#x18B]
+           | [#x18E-#x191]
+           | [#x193-#x194]
+           | [#x196-#x198]
+           | [#x19C-#x19D]
+           | [#x19F-#x1A0]
+           | [#x1A2-#x1A6]
+           | [#x1A7-#x1A9]
+           | [#x1AC-#x1AE]
+           | [#x1AF-#x1B1]
+           | [#x1B2-#x1B3]
+           | [#x1B5-#x1B7]
+           | [#x1B8-#x1BC]
+           | [#x1C4-#x1CD]
+           | [#x1CF-#x1DB]
+           | [#x1DE-#x1EE]
+           | [#x1F1-#x1F4]
+           | [#x1F6-#x1F8]
+           | [#x1FA-#x232]
+           | [#x23A-#x23B]
+           | [#x23D-#x23E]
+           | [#x241-#x243]
+           | [#x244-#x246]
+           | [#x248-#x24E]
+           | [#x370-#x372]
+           | [#x376-#x37F]
+           | [#x386-#x388]
+           | [#x389-#x38A]
+           | [#x38C-#x38E]
+           | [#x38F-#x391]
+           | [#x392-#x3A1]
+           | [#x3A3-#x3AB]
+           | [#x3CF-#x3D2]
+           | [#x3D3-#x3D4]
+           | [#x3D8-#x3EE]
+           | [#x3F4-#x3F7]
+           | [#x3F9-#x3FA]
+           | [#x3FD-#x42F]
+           | [#x460-#x480]
+           | [#x48A-#x4C0]
+           | [#x4C1-#x4CD]
+           | [#x4D0-#x52E]
+           | [#x531-#x556]
+           | [#x10A0-#x10C5]
+           | [#x10C7-#x10CD]
+           | [#x1E00-#x1E94]
+           | [#x1E9E-#x1EFE]
+           | [#x1F08-#x1F0F]
+           | [#x1F18-#x1F1D]
+           | [#x1F28-#x1F2F]
+           | [#x1F38-#x1F3F]
+           | [#x1F48-#x1F4D]
+           | [#x1F59-#x1F5F]
+           | [#x1F68-#x1F6F]
+           | [#x1FB8-#x1FBB]
+           | [#x1FC8-#x1FCB]
+           | [#x1FD8-#x1FDB]
+           | [#x1FE8-#x1FEC]
+           | [#x1FF8-#x1FFB]
+           | [#x2102-#x2107]
+           | [#x210B-#x210D]
+           | [#x2110-#x2112]
+           | [#x2115-#x2119]
+           | [#x211A-#x211D]
+           | [#x2124-#x212A]
+           | [#x212B-#x212D]
+           | [#x2130-#x2133]
+           | [#x213E-#x213F]
+           | [#x2145-#x2183]
+           | [#x2C00-#x2C2E]
+           | [#x2C60-#x2C62]
+           | [#x2C63-#x2C64]
+           | [#x2C67-#x2C6D]
+           | [#x2C6E-#x2C70]
+           | [#x2C72-#x2C75]
+           | [#x2C7E-#x2C80]
+           | [#x2C82-#x2CE2]
+           | [#x2CEB-#x2CED]
+           | [#x2CF2-#xA640]
+           | [#xA642-#xA66C]
+           | [#xA680-#xA69A]
+           | [#xA722-#xA72E]
+           | [#xA732-#xA76E]
+           | [#xA779-#xA77D]
+           | [#xA77E-#xA786]
+           | [#xA78B-#xA78D]
+           | [#xA790-#xA792]
+           | [#xA796-#xA7AA]
+           | [#xA7AB-#xA7AD]
+           | [#xA7B0-#xA7B1]
+           | [#xFF21-#xFF3A]
+UnicodeClassLL
+         ::= [a-z]
+           | [#xB5-#xDF]
+           | [#xE0-#xF6]
+           | [#xF8-#xFF]
+           | [#x101-#x137]
+           | [#x138-#x148]
+           | [#x149-#x177]
+           | [#x17A-#x17E]
+           | [#x17F-#x180]
+           | [#x183-#x185]
+           | [#x188-#x18C]
+           | [#x18D-#x192]
+           | [#x195-#x199]
+           | [#x19A-#x19B]
+           | [#x19E-#x1A1]
+           | [#x1A3-#x1A5]
+           | [#x1A8-#x1AA]
+           | [#x1AB-#x1AD]
+           | [#x1B0-#x1B4]
+           | [#x1B6-#x1B9]
+           | [#x1BA-#x1BD]
+           | [#x1BE-#x1BF]
+           | [#x1C6-#x1CC]
+           | [#x1CE-#x1DC]
+           | [#x1DD-#x1EF]
+           | [#x1F0-#x1F3]
+           | [#x1F5-#x1F9]
+           | [#x1FB-#x233]
+           | [#x234-#x239]
+           | [#x23C-#x23F]
+           | [#x240-#x242]
+           | [#x247-#x24F]
+           | [#x250-#x293]
+           | [#x295-#x2AF]
+           | [#x371-#x373]
+           | [#x377-#x37B]
+           | [#x37C-#x37D]
+           | [#x390-#x3AC]
+           | [#x3AD-#x3CE]
+           | [#x3D0-#x3D1]
+           | [#x3D5-#x3D7]
+           | [#x3D9-#x3EF]
+           | [#x3F0-#x3F3]
+           | [#x3F5-#x3FB]
+           | [#x3FC-#x430]
+           | [#x431-#x45F]
+           | [#x461-#x481]
+           | [#x48B-#x4BF]
+           | [#x4C2-#x4CE]
+           | [#x4CF-#x52F]
+           | [#x561-#x587]
+           | [#x1D00-#x1D2B]
+           | [#x1D6B-#x1D77]
+           | [#x1D79-#x1D9A]
+           | [#x1E01-#x1E95]
+           | [#x1E96-#x1E9D]
+           | [#x1E9F-#x1EFF]
+           | [#x1F00-#x1F07]
+           | [#x1F10-#x1F15]
+           | [#x1F20-#x1F27]
+           | [#x1F30-#x1F37]
+           | [#x1F40-#x1F45]
+           | [#x1F50-#x1F57]
+           | [#x1F60-#x1F67]
+           | [#x1F70-#x1F7D]
+           | [#x1F80-#x1F87]
+           | [#x1F90-#x1F97]
+           | [#x1FA0-#x1FA7]
+           | [#x1FB0-#x1FB4]
+           | [#x1FB6-#x1FB7]
+           | [#x1FBE-#x1FC2]
+           | [#x1FC3-#x1FC4]
+           | [#x1FC6-#x1FC7]
+           | [#x1FD0-#x1FD3]
+           | [#x1FD6-#x1FD7]
+           | [#x1FE0-#x1FE7]
+           | [#x1FF2-#x1FF4]
+           | [#x1FF6-#x1FF7]
+           | [#x210A-#x210E]
+           | [#x210F-#x2113]
+           | [#x212F-#x2139]
+           | [#x213C-#x213D]
+           | [#x2146-#x2149]
+           | [#x214E-#x2184]
+           | [#x2C30-#x2C5E]
+           | [#x2C61-#x2C65]
+           | [#x2C66-#x2C6C]
+           | [#x2C71-#x2C73]
+           | [#x2C74-#x2C76]
+           | [#x2C77-#x2C7B]
+           | [#x2C81-#x2CE3]
+           | [#x2CE4-#x2CEC]
+           | [#x2CEE-#x2CF3]
+           | [#x2D00-#x2D25]
+           | [#x2D27-#x2D2D]
+           | [#xA641-#xA66D]
+           | [#xA681-#xA69B]
+           | [#xA723-#xA72F]
+           | [#xA730-#xA731]
+           | [#xA733-#xA771]
+           | [#xA772-#xA778]
+           | [#xA77A-#xA77C]
+           | [#xA77F-#xA787]
+           | [#xA78C-#xA78E]
+           | [#xA791-#xA793]
+           | [#xA794-#xA795]
+           | [#xA797-#xA7A9]
+           | [#xA7FA-#xAB30]
+           | [#xAB31-#xAB5A]
+           | [#xAB64-#xAB65]
+           | [#xFB00-#xFB06]
+           | [#xFB13-#xFB17]
+           | [#xFF41-#xFF5A]
+UnicodeClassLT
+         ::= [#x1C5-#x1CB]
+           | [#x1F2-#x1F88]
+           | [#x1F89-#x1F8F]
+           | [#x1F98-#x1F9F]
+           | [#x1FA8-#x1FAF]
+           | [#x1FBC-#x1FCC]
+           | [#x1FFC-#x1FFC]
+UnicodeClassLM
+         ::= [#x2B0-#x2C1]
+           | [#x2C6-#x2D1]
+           | [#x2E0-#x2E4]
+           | [#x2EC-#x2EE]
+           | [#x374-#x37A]
+           | [#x559-#x640]
+           | [#x6E5-#x6E6]
+           | [#x7F4-#x7F5]
+           | [#x7FA-#x81A]
+           | [#x824-#x828]
+           | [#x971-#xE46]
+           | [#xEC6-#x10FC]
+           | [#x17D7-#x1843]
+           | [#x1AA7-#x1C78]
+           | [#x1C79-#x1C7D]
+           | [#x1D2C-#x1D6A]
+           | [#x1D78-#x1D9B]
+           | [#x1D9C-#x1DBF]
+           | [#x2071-#x207F]
+           | [#x2090-#x209C]
+           | [#x2C7C-#x2C7D]
+           | [#x2D6F-#x2E2F]
+           | [#x3005-#x3031]
+           | [#x3032-#x3035]
+           | [#x303B-#x309D]
+           | [#x309E-#x30FC]
+           | [#x30FD-#x30FE]
+           | [#xA015-#xA4F8]
+           | [#xA4F9-#xA4FD]
+           | [#xA60C-#xA67F]
+           | [#xA69C-#xA69D]
+           | [#xA717-#xA71F]
+           | [#xA770-#xA788]
+           | [#xA7F8-#xA7F9]
+           | [#xA9CF-#xA9E6]
+           | [#xAA70-#xAADD]
+           | [#xAAF3-#xAAF4]
+           | [#xAB5C-#xAB5F]
+           | [#xFF70-#xFF9E]
+           | [#xFF9F-#xFF9F]
+UnicodeClassLO
+         ::= [#xAA-#xBA]
+           | [#x1BB-#x1C0]
+           | [#x1C1-#x1C3]
+           | [#x294-#x5D0]
+           | [#x5D1-#x5EA]
+           | [#x5F0-#x5F2]
+           | [#x620-#x63F]
+           | [#x641-#x64A]
+           | [#x66E-#x66F]
+           | [#x671-#x6D3]
+           | [#x6D5-#x6EE]
+           | [#x6EF-#x6FA]
+           | [#x6FB-#x6FC]
+           | [#x6FF-#x710]
+           | [#x712-#x72F]
+           | [#x74D-#x7A5]
+           | [#x7B1-#x7CA]
+           | [#x7CB-#x7EA]
+           | [#x800-#x815]
+           | [#x840-#x858]
+           | [#x8A0-#x8B2]
+           | [#x904-#x939]
+           | [#x93D-#x950]
+           | [#x958-#x961]
+           | [#x972-#x980]
+           | [#x985-#x98C]
+           | [#x98F-#x990]
+           | [#x993-#x9A8]
+           | [#x9AA-#x9B0]
+           | [#x9B2-#x9B6]
+           | [#x9B7-#x9B9]
+           | [#x9BD-#x9CE]
+           | [#x9DC-#x9DD]
+           | [#x9DF-#x9E1]
+           | [#x9F0-#x9F1]
+           | [#xA05-#xA0A]
+           | [#xA0F-#xA10]
+           | [#xA13-#xA28]
+           | [#xA2A-#xA30]
+           | [#xA32-#xA33]
+           | [#xA35-#xA36]
+           | [#xA38-#xA39]
+           | [#xA59-#xA5C]
+           | [#xA5E-#xA72]
+           | [#xA73-#xA74]
+           | [#xA85-#xA8D]
+           | [#xA8F-#xA91]
+           | [#xA93-#xAA8]
+           | [#xAAA-#xAB0]
+           | [#xAB2-#xAB3]
+           | [#xAB5-#xAB9]
+           | [#xABD-#xAD0]
+           | [#xAE0-#xAE1]
+           | [#xB05-#xB0C]
+           | [#xB0F-#xB10]
+           | [#xB13-#xB28]
+           | [#xB2A-#xB30]
+           | [#xB32-#xB33]
+           | [#xB35-#xB39]
+           | [#xB3D-#xB5C]
+           | [#xB5D-#xB5F]
+           | [#xB60-#xB61]
+           | [#xB71-#xB83]
+           | [#xB85-#xB8A]
+           | [#xB8E-#xB90]
+           | [#xB92-#xB95]
+           | [#xB99-#xB9A]
+           | [#xB9C-#xB9E]
+           | [#xB9F-#xBA3]
+           | [#xBA4-#xBA8]
+           | [#xBA9-#xBAA]
+           | [#xBAE-#xBB9]
+           | [#xBD0-#xC05]
+           | [#xC06-#xC0C]
+           | [#xC0E-#xC10]
+           | [#xC12-#xC28]
+           | [#xC2A-#xC39]
+           | [#xC3D-#xC58]
+           | [#xC59-#xC60]
+           | [#xC61-#xC85]
+           | [#xC86-#xC8C]
+           | [#xC8E-#xC90]
+           | [#xC92-#xCA8]
+           | [#xCAA-#xCB3]
+           | [#xCB5-#xCB9]
+           | [#xCBD-#xCDE]
+           | [#xCE0-#xCE1]
+           | [#xCF1-#xCF2]
+           | [#xD05-#xD0C]
+           | [#xD0E-#xD10]
+           | [#xD12-#xD3A]
+           | [#xD3D-#xD4E]
+           | [#xD60-#xD61]
+           | [#xD7A-#xD7F]
+           | [#xD85-#xD96]
+           | [#xD9A-#xDB1]
+           | [#xDB3-#xDBB]
+           | [#xDBD-#xDC0]
+           | [#xDC1-#xDC6]
+           | [#xE01-#xE30]
+           | [#xE32-#xE33]
+           | [#xE40-#xE45]
+           | [#xE81-#xE82]
+           | [#xE84-#xE87]
+           | [#xE88-#xE8A]
+           | [#xE8D-#xE94]
+           | [#xE95-#xE97]
+           | [#xE99-#xE9F]
+           | [#xEA1-#xEA3]
+           | [#xEA5-#xEA7]
+           | [#xEAA-#xEAB]
+           | [#xEAD-#xEB0]
+           | [#xEB2-#xEB3]
+           | [#xEBD-#xEC0]
+           | [#xEC1-#xEC4]
+           | [#xEDC-#xEDF]
+           | [#xF00-#xF40]
+           | [#xF41-#xF47]
+           | [#xF49-#xF6C]
+           | [#xF88-#xF8C]
+           | [#x1000-#x102A]
+           | [#x103F-#x1050]
+           | [#x1051-#x1055]
+           | [#x105A-#x105D]
+           | [#x1061-#x1065]
+           | [#x1066-#x106E]
+           | [#x106F-#x1070]
+           | [#x1075-#x1081]
+           | [#x108E-#x10D0]
+           | [#x10D1-#x10FA]
+           | [#x10FD-#x1248]
+           | [#x124A-#x124D]
+           | [#x1250-#x1256]
+           | [#x1258-#x125A]
+           | [#x125B-#x125D]
+           | [#x1260-#x1288]
+           | [#x128A-#x128D]
+           | [#x1290-#x12B0]
+           | [#x12B2-#x12B5]
+           | [#x12B8-#x12BE]
+           | [#x12C0-#x12C2]
+           | [#x12C3-#x12C5]
+           | [#x12C8-#x12D6]
+           | [#x12D8-#x1310]
+           | [#x1312-#x1315]
+           | [#x1318-#x135A]
+           | [#x1380-#x138F]
+           | [#x13A0-#x13F4]
+           | [#x1401-#x166C]
+           | [#x166F-#x167F]
+           | [#x1681-#x169A]
+           | [#x16A0-#x16EA]
+           | [#x16F1-#x16F8]
+           | [#x1700-#x170C]
+           | [#x170E-#x1711]
+           | [#x1720-#x1731]
+           | [#x1740-#x1751]
+           | [#x1760-#x176C]
+           | [#x176E-#x1770]
+           | [#x1780-#x17B3]
+           | [#x17DC-#x1820]
+           | [#x1821-#x1842]
+           | [#x1844-#x1877]
+           | [#x1880-#x18A8]
+           | [#x18AA-#x18B0]
+           | [#x18B1-#x18F5]
+           | [#x1900-#x191E]
+           | [#x1950-#x196D]
+           | [#x1970-#x1974]
+           | [#x1980-#x19AB]
+           | [#x19C1-#x19C7]
+           | [#x1A00-#x1A16]
+           | [#x1A20-#x1A54]
+           | [#x1B05-#x1B33]
+           | [#x1B45-#x1B4B]
+           | [#x1B83-#x1BA0]
+           | [#x1BAE-#x1BAF]
+           | [#x1BBA-#x1BE5]
+           | [#x1C00-#x1C23]
+           | [#x1C4D-#x1C4F]
+           | [#x1C5A-#x1C77]
+           | [#x1CE9-#x1CEC]
+           | [#x1CEE-#x1CF1]
+           | [#x1CF5-#x1CF6]
+           | [#x2135-#x2138]
+           | [#x2D30-#x2D67]
+           | [#x2D80-#x2D96]
+           | [#x2DA0-#x2DA6]
+           | [#x2DA8-#x2DAE]
+           | [#x2DB0-#x2DB6]
+           | [#x2DB8-#x2DBE]
+           | [#x2DC0-#x2DC6]
+           | [#x2DC8-#x2DCE]
+           | [#x2DD0-#x2DD6]
+           | [#x2DD8-#x2DDE]
+           | [#x3006-#x303C]
+           | [#x3041-#x3096]
+           | [#x309F-#x30A1]
+           | [#x30A2-#x30FA]
+           | [#x30FF-#x3105]
+           | [#x3106-#x312D]
+           | [#x3131-#x318E]
+           | [#x31A0-#x31BA]
+           | [#x31F0-#x31FF]
+           | [#x3400-#x4DB5]
+           | [#x4E00-#x9FCC]
+           | [#xA000-#xA014]
+           | [#xA016-#xA48C]
+           | [#xA4D0-#xA4F7]
+           | [#xA500-#xA60B]
+           | [#xA610-#xA61F]
+           | [#xA62A-#xA62B]
+           | [#xA66E-#xA6A0]
+           | [#xA6A1-#xA6E5]
+           | [#xA7F7-#xA7FB]
+           | [#xA7FC-#xA801]
+           | [#xA803-#xA805]
+           | [#xA807-#xA80A]
+           | [#xA80C-#xA822]
+           | [#xA840-#xA873]
+           | [#xA882-#xA8B3]
+           | [#xA8F2-#xA8F7]
+           | [#xA8FB-#xA90A]
+           | [#xA90B-#xA925]
+           | [#xA930-#xA946]
+           | [#xA960-#xA97C]
+           | [#xA984-#xA9B2]
+           | [#xA9E0-#xA9E4]
+           | [#xA9E7-#xA9EF]
+           | [#xA9FA-#xA9FE]
+           | [#xAA00-#xAA28]
+           | [#xAA40-#xAA42]
+           | [#xAA44-#xAA4B]
+           | [#xAA60-#xAA6F]
+           | [#xAA71-#xAA76]
+           | [#xAA7A-#xAA7E]
+           | [#xAA7F-#xAAAF]
+           | [#xAAB1-#xAAB5]
+           | [#xAAB6-#xAAB9]
+           | [#xAABA-#xAABD]
+           | [#xAAC0-#xAAC2]
+           | [#xAADB-#xAADC]
+           | [#xAAE0-#xAAEA]
+           | [#xAAF2-#xAB01]
+           | [#xAB02-#xAB06]
+           | [#xAB09-#xAB0E]
+           | [#xAB11-#xAB16]
+           | [#xAB20-#xAB26]
+           | [#xAB28-#xAB2E]
+           | [#xABC0-#xABE2]
+           | [#xAC00-#xD7A3]
+           | [#xD7B0-#xD7C6]
+           | [#xD7CB-#xD7FB]
+           | [#xF900-#xFA6D]
+           | [#xFA70-#xFAD9]
+           | [#xFB1D-#xFB1F]
+           | [#xFB20-#xFB28]
+           | [#xFB2A-#xFB36]
+           | [#xFB38-#xFB3C]
+           | [#xFB3E-#xFB40]
+           | [#xFB41-#xFB43]
+           | [#xFB44-#xFB46]
+           | [#xFB47-#xFBB1]
+           | [#xFBD3-#xFD3D]
+           | [#xFD50-#xFD8F]
+           | [#xFD92-#xFDC7]
+           | [#xFDF0-#xFDFB]
+           | [#xFE70-#xFE74]
+           | [#xFE76-#xFEFC]
+           | [#xFF66-#xFF6F]
+           | [#xFF71-#xFF9D]
+           | [#xFFA0-#xFFBE]
+           | [#xFFC2-#xFFC7]
+           | [#xFFCA-#xFFCF]
+           | [#xFFD2-#xFFD7]
+           | [#xFFDA-#xFFDC]
+UnicodeClassNL
+         ::= #x16EE
+           | #x16EF
+           | #x16F0
+           | #x2160
+           | #x2161
+           | #x2162
+           | #x2163
+           | #x2164
+           | #x2165
+           | #x2166
+           | #x2167
+           | #x2168
+           | #x2169
+           | #x216A
+           | #x216B
+           | #x216C
+           | #x216D
+           | #x216E
+           | #x216F
+UnicodeClassMN
+         ::= #x300
+           | #x301
+           | #x302
+           | #x303
+           | #x304
+           | #x305
+           | #x306
+           | #x307
+           | #x308
+           | #x309
+           | #x30A
+           | #x30B
+           | #x30C
+           | #x30D
+           | #x30E
+           | #x30F
+           | #x310
+UnicodeClassMC
+         ::= #x903
+           | #x93E
+           | #x93F
+           | #x940
+           | #x949
+           | #x94A
+           | #x94B
+           | #x94C
+UnicodeClassCF
+         ::= #xAD
+           | #x600
+           | #x601
+           | #x602
+           | #x603
+           | #x6DD
+UnicodeClassPC
+         ::= '_'
+           | #x203F
+           | #x2040
+           | #x2054
+           | #xFE33
+           | #xFE34
+           | #xFE4D
+           | #xFE4E
+           | #xFE4F
+           | #xFF3F
+UnicodeClassND
+         ::= [0-9]
+           | [#x660-#x669]
+           | [#x6F0-#x6F9]
+           | [#x7C0-#x7C9]
+           | [#x966-#x96F]
+           | [#x9E6-#x9EF]
+           | [#xA66-#xA6F]
+           | [#xAE6-#xAEF]
+           | [#xB66-#xB6F]
+           | [#xBE6-#xBEF]
+           | [#xC66-#xC6F]
+           | [#xCE6-#xCEF]
+           | [#xD66-#xD6F]
+           | [#xDE6-#xDEF]
+           | [#xE50-#xE59]
+           | [#xED0-#xED9]
+           | [#xF20-#xF29]
+           | [#x1040-#x1049]
+           | [#x1090-#x1099]
+           | [#x17E0-#x17E9]
+           | [#x1810-#x1819]
+           | [#x1946-#x194F]
+           | [#x19D0-#x19D9]
+           | [#x1A80-#x1A89]
+           | [#x1A90-#x1A99]
+           | [#x1B50-#x1B59]
+           | [#x1BB0-#x1BB9]
+           | [#x1C40-#x1C49]
+           | [#x1C50-#x1C59]
+           | [#xA620-#xA629]
+           | [#xA8D0-#xA8D9]
+           | [#xA900-#xA909]
+           | [#xA9D0-#xA9D9]
+           | [#xA9F0-#xA9F9]
+           | [#xAA50-#xAA59]
+           | [#xABF0-#xABF9]
+           | [#xFF10-#xFF19]

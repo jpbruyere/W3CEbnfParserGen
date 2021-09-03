@@ -44,7 +44,7 @@ namespace W3CEbnfParserGen
 			tok = tokens [curTokIndex++];
 			return tok.Type == expectedType;
 		}		
-		bool TryPeek (out Token tok, TokenType expectedType) {
+		bool tryPeek (out Token tok, TokenType expectedType) {
 			if (EOF) {
 				tok = default;
 				return false;
@@ -138,7 +138,7 @@ namespace W3CEbnfParserGen
 		}
 
 		void checkCardinalityAndPushNewExpression (Expression exp) {
-			if (TryPeek (out Token tok, TokenType.CardinalityOp)) {
+			if (tryPeek (out Token tok, TokenType.CardinalityOp)) {
 				Read ();
 				switch (tok.AsString (source)) {
 					case "?":
@@ -249,19 +249,21 @@ namespace W3CEbnfParserGen
 						System.Diagnostics.Debugger.Break ();
 					
 					if (resolveStackTryPeek<Expression> (out Expression exp)) {
-						resolveStack.Pop ();
-						if (resolveStackTryPeek<Token> (out tok)) {
-							if (tok.Type.HasFlag (TokenType.Operator)) {
-								if (operatorPrecedance (tok) <= operatorPrecedance (newOp))
-									resolveStack.Push (resolve (exp));
-								else
+						if (resolveStack.Count > 1) {
+							resolveStack.Pop ();
+							if (resolveStackTryPeek<Token> (out tok)) {
+								if (tok.Type.HasFlag (TokenType.Operator)) {
+									if (operatorPrecedance (tok) <= operatorPrecedance (newOp))
+										resolveStack.Push (resolve (exp));
+									else
+										resolveStack.Push (exp);
+								} else if (tok.Type == TokenType.OpenBracket)
 									resolveStack.Push (exp);
-							} else if (tok.Type == TokenType.OpenBracket)
+							} else if (3 <= operatorPrecedance (newOp)) { //so theres an expression on the stack, the operator is sequenceOp (whitespace) with precedence = 3
+								resolveStack.Push (resolve (exp));
+							} else
 								resolveStack.Push (exp);
-						} else if (3 <= operatorPrecedance (newOp)) { //so theres an expression on the stack, the operator is sequenceOp (whitespace) with precedence = 3
-							resolveStack.Push (resolve (exp));
-						} else
-							resolveStack.Push (exp);
+						}
 						
 						resolveStack.Push (newOp);
 					} else
@@ -270,7 +272,7 @@ namespace W3CEbnfParserGen
 					System.Diagnostics.Debugger.Break ();
 			}
 
-			if (curSymbol != null) 
+			if (resolveStack != null && resolveStack.Count > 0) 
 				storeSymbol ();
 
 			return symbols.ToArray ();

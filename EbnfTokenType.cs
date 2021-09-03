@@ -13,6 +13,7 @@ namespace W3CEbnfParserGen
 		WhiteSpace				= 0x4100,
 		Tabulation				= 0x4101,
 		LineBreak				= 0x4102,
+		EndOfFile				= 0x4103,
 		LineComment				= 0x0103,
 		BlockCommentStart		= 0x0104,
 		BlockComment			= 0x0105,
