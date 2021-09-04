@@ -10,7 +10,7 @@
 			"request": "launch",
 			"preLaunchTask": "build",
 			"program": "${workspaceFolder}/bin/Debug/netcoreapp3.1/W3CEbnfParserGen.dll",
-			"args": ["Grammars/w3cEbnf/csharp/sharwell_preproc_parser.ebnf"],
+			"args": ["Grammars/w3cEbnf/xml.ebnf"],
 			"cwd": "${workspaceFolder}",
 			"console": "internalConsole",
 			"stopAtEntry": false
