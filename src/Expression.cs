@@ -10,8 +10,9 @@ namespace W3CEbnfParserGen
 {
 	public abstract class Expression {
 		public bool Optional, Single = true;
-		public override string ToString() => Single ? Optional ? "?" : "" : Optional ? "*" : "+";
+		public bool HasCardinality => !(Single && !Optional);
 		public string CardinalityString => Single ? Optional ? "?" : "" : Optional ? "*" : "+";
+		public override string ToString() => Single ? Optional ? "?" : "" : Optional ? "*" : "+";
 
 		public virtual IEnumerable<Expression> Flatten {
 			get {
@@ -26,15 +27,16 @@ namespace W3CEbnfParserGen
 			Negative = negative;
 			Elements = elements;
 		}
-		public override string ToString() => Elements.Select (e=>e.ToString()).Aggregate ((a,b) => $"{a}{b}");
+		public override string ToString() =>
+			$"{(Negative ? "[^" : "[")}{Elements.Select (e=>e.ToString()).Aggregate ((a,b) => $"{a}{b}")}]";
 	}
 	public class SymbolMatch : Expression {
 		public readonly string SymbolName;
 		public SymbolMatch (string symbolName) {
 			SymbolName = symbolName;
 		}
-		public override string ToString() => $"{SymbolName}{CardinalityString}";
-
+		public override string ToString() =>
+				$"{SymbolName}{CardinalityString}";
 	}
 	public class StringMatch : Expression {
 		public readonly string MatchString;
@@ -52,7 +54,6 @@ namespace W3CEbnfParserGen
 		public CompoundExpression (Type comoundExpressionType) {
 			CompExpType = comoundExpressionType;
 		}
-		public bool HasCardinality => !(Single && !Optional);
 		public int OpPrecedence => (int)CompExpType;
 		public override string ToString()
 		{

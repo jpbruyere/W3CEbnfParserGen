@@ -30,7 +30,7 @@ namespace W3CEbnfParserGen
 				RangeStart = rangeStart;
 				RangeEnd = rangeEnd;
 			}
-			public override string ToString() => $"#{RangeStart}-{RangeEnd}";
+			public override string ToString() => $"{RangeStart}-{RangeEnd}";
 		}
 	}
 }
