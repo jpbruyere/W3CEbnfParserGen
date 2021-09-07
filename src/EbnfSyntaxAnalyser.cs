@@ -217,12 +217,51 @@ namespace W3CEbnfParserGen
 					tok = Read ();
 					Expression te = default;
 					if (tok.Type == TokenType.CharMatchOpen) {
-						if (tryRead (out tok, TokenType.CharMatch)) {
-							te = new TerminalExpression (TerminalExpression.Type.CharRange, tok.AsString (source));
-							if (!tryRead (out tok, TokenType.CharMatchClose))
+						bool negative = false;
+						if (tryPeek (out tok, TokenType.CharMatchNegation)) {
+							Read ();
+							negative = true;
+						}
+						List<CharRangeElement> elts = new List<CharRangeElement> ();
+						CharRangeElement.SingleChar leftOp = null;
+						while (tryRead (out tok)) {
+							if (tok.Type == TokenType.CharMatchClose) {
+								if (leftOp != null)
+									elts.Add (leftOp);
+								if (elts.Count == 0)
+									throw new EbnfParserException ($"empty character range match");
+								te = new CharRangeExpression (negative, elts.ToArray());
+								break;
+							}
+							if (tok.Type == TokenType.CharMatchRangeOperator) {
+								if (leftOp == null) {
+									elts.Add (new CharRangeElement.SingleChar ('-'));
+									continue;
+								}
+								if (tryRead (out tok)) {
+									if (tok.Type == TokenType.CharMatch)
+										elts.Add (new CharRangeElement.CharRange (leftOp,
+											new CharRangeElement.SingleChar(tok.GetChar (source))));
+									else if (tok.Type == TokenType.CodePointMatch)
+										elts.Add (new CharRangeElement.CharRange (leftOp,
+											new CharRangeElement.SingleChar(tok.AsString (source))));
+									else
+										throw new EbnfParserException ($"malformed character range match, expecting end range after '-'");
+									leftOp = null;
+									continue;
+								}
 								throw new EbnfParserException ($"malformed character range match");
-						} else
-							throw new EbnfParserException ($"malformed character range match");
+
+							} else if (leftOp != null)
+								elts.Add (leftOp);
+							
+							if (tok.Type == TokenType.CharMatch)
+								leftOp = new CharRangeElement.SingleChar(tok.GetChar (source));
+							else if (tok.Type == TokenType.CodePointMatch)
+								leftOp = new CharRangeElement.SingleChar(tok.AsString (source));
+							else
+								throw new EbnfParserException ($"malformed character range match");
+						}
 					}
 					if (tok.Type == TokenType.StringMatchOpen) {
 						if (tryRead (out tok, TokenType.StringMatch)) {

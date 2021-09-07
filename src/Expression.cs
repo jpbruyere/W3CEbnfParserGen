@@ -1,6 +1,7 @@
 // Copyright (c) 2021  Bruyère Jean-Philippe <jp_bruyere@hotmail.com>
 //
 // This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,6 +13,45 @@ namespace W3CEbnfParserGen
 		public string CardinalityString => Single ? Optional ? "?" : "" : Optional ? "*" : "+";
 
 		public abstract IEnumerable<Expression> Flatten { get; }
+	}
+	public abstract class CharRangeElement {
+		public class SingleChar : CharRangeElement {
+			public int CodePoint;
+			public char AsChar => (char)CodePoint;
+			public SingleChar (char c) {
+				CodePoint = (int)c;
+			}
+			public SingleChar (int c) {
+				CodePoint = c;
+			}
+			public SingleChar (ReadOnlySpan<char> ebnfUcsCodePoint) {
+				CodePoint = int.Parse (ebnfUcsCodePoint.Slice (2), System.Globalization.NumberStyles.HexNumber);
+			}
+		}
+		public class CharRange : CharRangeElement {
+			public SingleChar RangeStart;
+			public SingleChar RangeEnd;
+
+			public CharRange (SingleChar rangeStart, SingleChar rangeEnd) {
+				RangeStart = rangeStart;
+				RangeEnd = rangeEnd;
+			}
+
+		}
+
+	}
+	public class CharRangeExpression : Expression {
+		public readonly bool Negative;
+		public readonly CharRangeElement[] Elements;
+		public CharRangeExpression (bool negative, CharRangeElement[] elements) {
+			Negative = negative;
+			Elements = elements;
+		}
+		public override IEnumerable<Expression> Flatten {
+			get {
+				yield return this;
+			}
+		}
 	}
 	public class TerminalExpression : Expression {
 		public enum Type { Symbol, CharRange, String, CodePoint }

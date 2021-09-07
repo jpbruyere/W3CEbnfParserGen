@@ -86,6 +86,7 @@ namespace W3CEbnfParserGen
 			
 		public ReadOnlySpan<char> Get (int fromPosition) => buffer.Slice (fromPosition, curPos - fromPosition);
 		public ReadOnlySpan<char> Get (int fromPosition, int toPosition) => buffer.Slice (fromPosition, toPosition - fromPosition);
+		public ReadOnlySpan<char> Get (Token tok) => buffer.Slice (tok.Start, tok.Length);
 		public bool EndOfSpan => curPos >= buffer.Length;
 		public bool TryPeek (char c) => !EndOfSpan && Peek == c;
 		public bool TryPeek (ref char c) {

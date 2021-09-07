@@ -26,7 +26,17 @@ namespace W3CEbnfParserGen
 			}
 			return false;
 		}
-		bool readNumber (ref SpanCharReader reader) {
+		//first '#' character must have been read
+		void readUcsCodePoint (ref SpanCharReader reader) {
+			if (reader.TryRead ('x')) {
+				if (readHexNumber (ref reader)) {
+					addTok (ref reader, TokenType.CodePointMatch);
+					return;
+				}
+			}
+			throw new EbnfParserException ("malform ucs character codepoint, expecting '#xN'.");
+		}
+		bool readHexNumber (ref SpanCharReader reader) {
 			if (reader.EndOfSpan)
 				return false;		
 			if (IsValidHexDigit (reader.Peek)) {
@@ -148,22 +158,33 @@ namespace W3CEbnfParserGen
 				case '[':
 					reader.Advance();
 					addTok (ref reader, TokenType.CharMatchOpen);
-					if (reader.TryReadUntil ("]")) {
+					if (reader.TryPeek ('^')) {
+						reader.Advance();
+						addTok (ref reader, TokenType.CharMatchNegation);
+					}
+					while(!reader.EndOfSpan) {
+						char c = reader.Read ();
+						if (c == ']') {
+							addTok (ref reader, TokenType.CharMatchClose);	
+							break;
+						} else if (c == '-')
+							addTok (ref reader, TokenType.CharMatchRangeOperator);
+						else if (c == '#' && reader.TryPeek ('x'))
+							readUcsCodePoint (ref reader);
+						else
+							addTok (ref reader, TokenType.CharMatch);
+					}
+					/*if (reader.TryReadUntil ("]")) {
 						addTok (ref reader, TokenType.CharMatch);
 						reader.Advance (1);	
 						addTok (ref reader, TokenType.CharMatchClose);
 						break;
-					}
+					}*/
 					break;
 				case '#':
-					reader.Advance();
-					if (reader.TryRead ('x')) {
-						if (readNumber (ref reader)) {
-							addTok (ref reader, TokenType.CodePointMatch);
-							break;
-						}
-					}
-					throw new EbnfParserException ("malform ucs character codepoint, expecting '#xN'.");
+					reader.Advance ();
+					readUcsCodePoint (ref reader);
+					break;
 				case '$':
 					reader.Advance ();
 					addTok (ref reader, TokenType.EndOfFile);

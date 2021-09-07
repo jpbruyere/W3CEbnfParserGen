@@ -28,6 +28,9 @@ namespace W3CEbnfParserGen
 		CharMatchClose			= 0x0404,// ']'
 		StringMatchOpen			= 0x0405,
 		StringMatchClose		= 0x0406,
+		CharMatchNegation		= 0x0407,// '^'
+		CharMatchRangeOperator	= 0x0C01,// '-'
+		//CharMatch				= 0x0C01,// '-'
 
 		Operator 				= 0x0800,
 		SymbolAffectation 		= 0x0801,
