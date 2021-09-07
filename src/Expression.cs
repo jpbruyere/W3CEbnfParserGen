@@ -3,6 +3,7 @@
 // This code is licensed under the MIT license (MIT) (http://opensource.org/licenses/MIT)
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace W3CEbnfParserGen
@@ -12,73 +13,36 @@ namespace W3CEbnfParserGen
 		public override string ToString() => Single ? Optional ? "?" : "" : Optional ? "*" : "+";
 		public string CardinalityString => Single ? Optional ? "?" : "" : Optional ? "*" : "+";
 
-		public abstract IEnumerable<Expression> Flatten { get; }
-	}
-	public abstract class CharRangeElement {
-		public class SingleChar : CharRangeElement {
-			public int CodePoint;
-			public char AsChar => (char)CodePoint;
-			public SingleChar (char c) {
-				CodePoint = (int)c;
-			}
-			public SingleChar (int c) {
-				CodePoint = c;
-			}
-			public SingleChar (ReadOnlySpan<char> ebnfUcsCodePoint) {
-				CodePoint = int.Parse (ebnfUcsCodePoint.Slice (2), System.Globalization.NumberStyles.HexNumber);
+		public virtual IEnumerable<Expression> Flatten {
+			get {
+				yield return this;
 			}
 		}
-		public class CharRange : CharRangeElement {
-			public SingleChar RangeStart;
-			public SingleChar RangeEnd;
-
-			public CharRange (SingleChar rangeStart, SingleChar rangeEnd) {
-				RangeStart = rangeStart;
-				RangeEnd = rangeEnd;
-			}
-
-		}
-
 	}
-	public class CharRangeExpression : Expression {
+	public class CharMatchExpression : Expression {
 		public readonly bool Negative;
 		public readonly CharRangeElement[] Elements;
-		public CharRangeExpression (bool negative, CharRangeElement[] elements) {
+		public CharMatchExpression (bool negative, params CharRangeElement[] elements) {
 			Negative = negative;
 			Elements = elements;
 		}
-		public override IEnumerable<Expression> Flatten {
-			get {
-				yield return this;
-			}
-		}
+		public override string ToString() => Elements.Select (e=>e.ToString()).Aggregate ((a,b) => $"{a}{b}");
 	}
-	public class TerminalExpression : Expression {
-		public enum Type { Symbol, CharRange, String, CodePoint }
-		public readonly Type ExpressionType;
-		public readonly string Matche;
-		public TerminalExpression (Type type, string matche) {
-			ExpressionType = type;
-			Matche = matche;
+	public class SymbolMatch : Expression {
+		public readonly string SymbolName;
+		public SymbolMatch (string symbolName) {
+			SymbolName = symbolName;
 		}
-		public override string ToString() {
-			switch (ExpressionType)
-			{
-				case Type.Symbol:
-					return $"{Matche}{CardinalityString}";
-				case Type.CharRange:
-					return $"[{Matche}]{CardinalityString}";
-				case Type.CodePoint:
-					return $"{Matche}{CardinalityString}";
-				default:
-					return $"'{Matche}'{CardinalityString}";
-			}
+		public override string ToString() => $"{SymbolName}{CardinalityString}";
+
+	}
+	public class StringMatch : Expression {
+		public readonly string MatchString;
+		public StringMatch (string matchString) {
+			MatchString = matchString;
 		}
-		public override IEnumerable<Expression> Flatten {
-			get {
-				yield return this;
-			}
-		}
+		public override string ToString() => $"'{MatchString}'{CardinalityString}";
+
 	}
 	public class CompoundExpression : Expression {
 		public enum Type { Exclusion = 2, Sequence = 3, Choice = 4 }

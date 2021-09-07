@@ -83,11 +83,10 @@ W3CEbnfParserGen [options] input-files
 			foreach	(string inputFile in inputFiles)
 				symbols.AddRange (parseEbnf (inputFile));
 			
-			
 			foreach (SymbolDecl sd in symbols) {
-				Console.WriteLine ($"{sd.Name}");
-				foreach (Expression e in sd.FlattenedExpressions.Where (ex => !(ex is TerminalExpression te && te.ExpressionType == TerminalExpression.Type.Symbol)))
-					Console.WriteLine ($"\t{e}");
+				Console.WriteLine ($"{sd}");
+				/*foreach (Expression e in sd.FlattenedExpressions)
+					Console.WriteLine ($"\t{e}");*/
 			}
 		}
 		SymbolDecl[] parseEbnf (string inputPath) {

@@ -230,7 +230,7 @@ namespace W3CEbnfParserGen
 									elts.Add (leftOp);
 								if (elts.Count == 0)
 									throw new EbnfParserException ($"empty character range match");
-								te = new CharRangeExpression (negative, elts.ToArray());
+								te = new CharMatchExpression (negative, elts.ToArray());
 								break;
 							}
 							if (tok.Type == TokenType.CharMatchRangeOperator) {
@@ -265,7 +265,7 @@ namespace W3CEbnfParserGen
 					}
 					if (tok.Type == TokenType.StringMatchOpen) {
 						if (tryRead (out tok, TokenType.StringMatch)) {
-							te = new TerminalExpression (TerminalExpression.Type.String, tok.AsString (source));
+							te = new StringMatch (tok.AsString (source));
 							if (!tryRead (out tok, TokenType.StringMatchClose))
 								throw new EbnfParserException ($"malformed string match");
 						} else
@@ -274,14 +274,15 @@ namespace W3CEbnfParserGen
 					checkCardinalityAndPushNewExpression (te);
 				} else if (Peek.Type == TokenType.CodePointMatch) {
 					tok = Read ();
-					checkCardinalityAndPushNewExpression (new TerminalExpression (TerminalExpression.Type.CodePoint, tok.AsString (source)));
+					checkCardinalityAndPushNewExpression (
+						new CharMatchExpression (false, new CharRangeElement.SingleChar(tok.AsString (source))));
 				} else if (Peek.Type == TokenType.SymbolName) {
 					if (EndOfExpression) {
 						storeSymbol ();
 						continue;
 					}
 					tok = Read ();
-					checkCardinalityAndPushNewExpression (new TerminalExpression (TerminalExpression.Type.Symbol, tok.AsString (source)));
+					checkCardinalityAndPushNewExpression (new SymbolMatch (tok.AsString (source)));
 				} else if (Peek.Type.HasFlag (TokenType.Operator)) {
 					Token newOp = Read ();					
 					if (newOp.Type == TokenType.SymbolAffectation || newOp.Type == TokenType.CardinalityOp)
